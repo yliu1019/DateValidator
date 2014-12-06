@@ -4,6 +4,6 @@ function DateValidator(mm, dd, yy) {
 	this.yy = yy;
 }
 
-DateValidator.prototype.show = function() {
+DateValidator.prototype.show = function {
 	alert(this.yy + '-' + this.mm + '-' + this.dd);
 }
