@@ -16,31 +16,33 @@ function DateValidator(yyyy, mm, dd) {
 		this.isCurrentMonthValid = false;
 
 	var tmp_dd = parseInt(this.dd);
-	if(tmp_dd >= 1 && this.isCurrentYearValid && this.isCurrentMonthValid) {
-		if (tmp_mm == 1 || tmp_mm == 3 || tmp_mm == 5 || tmp_mm == 7 || tmp_mm == 8 || tmp_mm == 10 || tmp_mm == 12 ) {
-			if (tmp_dd <= 31)
-				this.isCurrentDayValid = true
-			else
-				this.isCurrentDayValid = false;
-		} else if (tmp_mm == 4 || tmp_mm == 6 || tmp_mm == 9 || tmp_mm == 11) {
-			if (tmp_dd <= 30)
-				this.isCurrentDayValid = true
-			else
-				this.isCurrentDayValid = false;
-		} else if (this.isCurrentYearALeapYear()) {
-			if (tmp_dd <= 29)
-				this.isCurrentDayValid = true
-			else
-				this.isCurrentDayValid = false;
-		} else {
-			if (tmp_dd <= 28)
-				this.isCurrentDayValid = true
-			else
-				this.isCurrentDayValid = false;
-		}
-	} else {
-		this.isCurrentDayValid = false;
-	}
+	if(tmp_dd >= 1 && tmp_dd <= 31) {
+        if(this.isCurrentMonthValid) {
+            if(tmp_mm == 4 || tmp_mm == 6 || tmp_mm == 9 || tmp_mm == 11) {
+                if(tmp_dd <= 30)
+                    this.isCurrentDayValid = true;
+                else
+                    this.isCurrentDayValid = false;
+            } else if tmp_mm == 2 {
+                if(this.isCurrentYearValid) {
+                    if((this.isCurrentYearALeapYear && tmp_dd <= 29) || (this.isCurrentYearALeapYear == false && tmp_dd <= 28))
+                        this.isCurrentDayValid = true;
+                    else
+                        this.isCurrentDayValid = false;
+                } else if (tmp_dd <= 29) {
+                    this.isCurrentDayValid = true;
+                } else {
+                    this.isCurrentDayValid = false;
+                }
+            } else  {
+                this.isCurrentDayValid = true;
+            }
+        } else {
+            this.isCurrentDayValid = true;
+        }
+    } else {
+        this.isCurrentDayValid = false;
+    }
 
 	this.currentYear = function() {
 		if(this.isCurrentYearValid)
