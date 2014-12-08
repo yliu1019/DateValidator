@@ -129,7 +129,7 @@ function DateValidator(yyyy, mm, dd) {
 
 	this.nextDay = function() {
 		if(this.isCurrentDayValid) {
-			if(isCurrentMonthValid) {
+			if(this.isCurrentMonthValid) {
 				var upper_b = 31;
 				if(this.currentMonth == 4 || this.currentMonth == 6 || this.currentMonth == 9 || this.currentMonth == 11) {
 					upper_b = 30;
