@@ -23,7 +23,7 @@ function DateValidator(yyyy, mm, dd) {
                     this.isCurrentDayValid = true;
                 else
                     this.isCurrentDayValid = false;
-            } else if tmp_mm == 2 {
+            } else if(tmp_mm == 2) {
                 if(this.isCurrentYearValid) {
                     if((this.isCurrentYearALeapYear && tmp_dd <= 29) || (this.isCurrentYearALeapYear == false && tmp_dd <= 28))
                         this.isCurrentDayValid = true;
