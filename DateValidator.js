@@ -144,7 +144,7 @@ function DateValidator(yyyy, mm, dd) {
 					return new DateValidator(yyyy, mm, tmp_dd + 1);
 				else {
 					var nm = this.nextMonth();
-					return new DateValidator(nm.yy, nm.mm, 1);
+					return new DateValidator(nm.yyyy, nm.mm, 1);
 				}
 			} else if(tmp_dd == 31) {
 				return this;
