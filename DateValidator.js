@@ -62,6 +62,17 @@ function DateValidator(yyyy, mm, dd) {
 			return undefined;
 	}
 
+	this.coalesceYear = function() {
+		if(this.isCurrentYearValid)
+			return tmp_yyyy;
+		else if(isNaN(tmp_yyyy))
+			return new Date().getFullYear();
+		else if (tmp_yyyy < 1000)
+			return 1000;
+		else
+			return 9999;
+	}
+
 	this.previousYear = function() {
 		if(this.isCurrentYearValid) {
 			if(tmp_yyyy > 1000)
@@ -89,6 +100,17 @@ function DateValidator(yyyy, mm, dd) {
 			return tmp_mm;
 		else
 			return undefined;
+	}
+
+	this.coalesceMonth = function() {
+		if(this.isCurrentMonthValid)
+			return tmp_mm;
+		else if(isNaN(tmp_mm))
+			return new Date().getMonth();
+		else if(tmp_mm > 12)
+			return 12;
+		else
+			return 1;
 	}
 
 	this.lastDayOfCurrentMonth = function() {
@@ -129,6 +151,19 @@ function DateValidator(yyyy, mm, dd) {
 			return tmp_dd;
 		else
 			return undefined;
+	}
+
+	this.coalesceDay = function() {
+		if(this.isCurrentDayValid)
+			return tmp_dd;
+		else if (isNaN(tmp_dd))
+			return new Date().getDate();
+		else if (tmp_dd < 1)
+			return 1;
+		else if (this.isCurrentMonthValid)
+			return this.lastDayOfCurrentMonth();
+		else
+			return 31;
 	}
 
 	this.previousDay = function() {
