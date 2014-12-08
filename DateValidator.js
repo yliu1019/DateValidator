@@ -9,6 +9,13 @@ function DateValidator(yyyy, mm, dd) {
 	else
 		this.isCurrentYearValid = false;
 
+	this.isCurrentYearALeapYear = function() {
+		if(this.isCurrentYearValid)
+			return tmp_yyyy % 4 == 0 ? true : false;
+		else
+			return undefined;
+	}
+
 	var tmp_mm = parseInt(this.mm);
 	if(tmp_mm <= 12 && tmp_mm >= 1)
 		this.isCurrentMonthValid = true;
@@ -25,10 +32,12 @@ function DateValidator(yyyy, mm, dd) {
                     this.isCurrentDayValid = false;
             } else if(tmp_mm == 2) {
                 if(this.isCurrentYearValid) {
-                    if((this.isCurrentYearALeapYear && tmp_dd <= 29) || (this.isCurrentYearALeapYear == false && tmp_dd <= 28))
-                        this.isCurrentDayValid = true;
-                    else
+                    if((this.isCurrentYearALeapYear() && tmp_dd <= 29) || (this.isCurrentYearALeapYear() == false && tmp_dd <= 28)) {
+						this.isCurrentDayValid = true;
+                    }
+                    else {
                         this.isCurrentDayValid = false;
+                    }
                 } else if (tmp_dd <= 29) {
                     this.isCurrentDayValid = true;
                 } else {
@@ -44,16 +53,11 @@ function DateValidator(yyyy, mm, dd) {
         this.isCurrentDayValid = false;
     }
 
+    this.isDateValid = this.isCurrentYearValid && this.isCurrentMonthValid && this.isCurrentDayValid;
+
 	this.currentYear = function() {
 		if(this.isCurrentYearValid)
 			return tmp_yyyy;
-		else
-			return undefined;
-	}
-
-	this.isCurrentYearALeapYear = function() {
-		if(this.isCurrentYearValid)
-			return this.tmp_yyyy % 4 == 0 ? true : false;
 		else
 			return undefined;
 	}
@@ -87,12 +91,23 @@ function DateValidator(yyyy, mm, dd) {
 			return undefined;
 	}
 
+	this.lastDayOfCurrentMonth = function() {
+		if(tmp_mm == 1 || tmp_mm == 3 || tmp_mm == 5 || tmp_mm == 7 || tmp_mm == 8 || tmp_mm == 10 || tmp_mm == 12)
+			return 31;
+		else if (tmp_mm == 4 || tmp_mm == 6 || tmp_mm == 9 || tmp_mm == 11)
+			return 30;
+		else if (this.isCurrentYearALeapYear())
+			return 29;
+		else
+			return 28;
+	}
+
 	this.previousMonth = function() {
 		if(this.isCurrentMonthValid) {
 			if(tmp_mm > 1)
 				return new DateValidator(yyyy, tmp_mm - 1, dd);
 			else 
-				return new DateValidator(this.previousYear(), 12, dd);
+				return new DateValidator(this.previousYear().yyyy, 12, dd);
 		} else {
 			return undefined;
 		}
@@ -120,8 +135,10 @@ function DateValidator(yyyy, mm, dd) {
 		if(this.isCurrentDayValid) {
 			if(tmp_dd > 1)
 				return new DateValidator(yyyy, mm, tmp_dd - 1);
-			else 
-				return undefined;
+			else {
+				var pm = this.previousMonth();
+				return new DateValidator(pm.yyyy, pm.mm, this.lastDayOfCurrentMonth());
+			}
 		} else {
 			return undefined;
 		}
@@ -131,15 +148,14 @@ function DateValidator(yyyy, mm, dd) {
 		if(this.isCurrentDayValid) {
 			if(this.isCurrentMonthValid) {
 				var upper_b = 31;
-				if(this.currentMonth == 4 || this.currentMonth == 6 || this.currentMonth == 9 || this.currentMonth == 11) {
+				if(tmp_mm == 4 || tmp_mm == 6 || tmp_mm == 9 || tmp_mm == 11) {
 					upper_b = 30;
-				} else if (this.currentMonth == 2) {
-					if(this.isCurrentYearValid == false || this.isCurrentYearALeapYear)
+				} else if (tmp_mm == 2) {
+					if(this.isCurrentYearValid == false || this.isCurrentYearALeapYear())
 						upper_b = 29;
 					else
 						upper_b = 28;
 				}
-				console.log(upper_b);
 				if(tmp_dd < upper_b)
 					return new DateValidator(yyyy, mm, tmp_dd + 1);
 				else {
@@ -160,5 +176,6 @@ function DateValidator(yyyy, mm, dd) {
 		console.log("Year: " + this.yyyy);
 		console.log("Month: " + this.mm);
 		console.log("Day: " + this.dd);
+		console.log("Is Valid? " + (this.isDateValid ? 'Yes' : 'No'));
 	}
 }
