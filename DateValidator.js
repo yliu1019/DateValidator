@@ -103,7 +103,7 @@ function DateValidator(yyyy, mm, dd) {
 			if(tmp_mm < 12)
 				return new DateValidator(yyyy, tmp_mm + 1, dd);
 			else 
-				return new DateValidator(this.nextYear(), 1, dd);
+				return new DateValidator(this.nextYear().yyyy, 1, dd);
 		} else {
 			return undefined;
 		}
