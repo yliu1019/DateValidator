@@ -1,65 +1,104 @@
-function DateValidator(mm, dd, yy) {
-	this.mm = parseInt(mm);
-	this.dd = parseInt(dd);
-	this.yy = parseInt(yy);
+function DateValidator(yyyy, mm, dd) {
+	this.yyyy = yyyy;
+	this.mm = mm;
+	this.dd = dd;
 
-	this.is_mm_empty = (mm == '' || isNaN(mm)) ? true : false;
-	this.is_dd_empty = (dd == '' || isNaN(dd)) ? true : false;
-	this.is_yy_empty = (yy == '' || isNaN(yy)) ? true : false;
+	var tmp_yyyy = parseInt(this.yyyy);
+	if(tmp_yyyy >= 1000 && tmp_yyyy <= 9999)
+		this.isCurrentYearValid = true;
+	else
+		this.isCurrentYearValid = false;
 
-	this.isLeapYear = yy % 4 == 0 ? true : false;
-}
+	var tmp_mm = parseInt(this.mm);
+	if(tmp_mm <= 12 && tmp_mm >= 1)
+		this.isCurrentMonthValid = true;
+	else
+		this.isCurrentMonthValid = false;
 
-DateValidator.prototype.previousMonth = function() {
-	
-}
-
-DateValidator.prototype.nextMonth = function() {
-	
-}
-
-DateValidator.prototype.previousDay = function() {
-	
-}
-
-DateValidator.prototype.nextDay = function() {
-	
-}
-
-DateValidator.prototype.previousYear = function() {
-	
-}
-
-DateValidator.prototype.nextYear = function() {
-	
-}
-
-DateValidator.prototype.isValid = function() {
-	if(this.is_mm_empty || this.is_dd_empty || this.is_yy_empty
-		|| this.mm < 1 || this.mm > 12 || this.dd < 1) {
-		return false;
-	} else if (this.mm == 1 || this.mm == 3 || this.mm == 5
-		|| this.mm == 7 || this.mm == 8 || this.mm == 10
-		|| this.mm == 12 ) {
-		if (this.dd <= 31)
-			return true;
-		else
-			return false;
-	} else if (this.mm == 4 || this.mm == 6 || this.mm == 9
-		|| this.mm == 11) {
-		if (this.dd <= 30)
-			return true;
-		else
-			return false;
-	} else if (this.isLeapYear) {
-		if (this.dd <= 29)
-			return true;
-		else
-			return false;
+	var tmp_dd = parseInt(this.dd);
+	if(tmp_dd >= 1 && this.isCurrentYearValid && this.isCurrentMonthValid) {
+		if (tmp_mm == 1 || tmp_mm == 3 || tmp_mm == 5 || tmp_mm == 7 || tmp_mm == 8 || tmp_mm == 10 || tmp_mm == 12 ) {
+			if (tmp_dd <= 31)
+				this.isCurrentDayValid = true
+			else
+				this.isCurrentDayValid = false;
+		} else if (tmp_mm == 4 || tmp_mm == 6 || tmp_mm == 9 || tmp_mm == 11) {
+			if (tmp_dd <= 30)
+				this.isCurrentDayValid = true
+			else
+				this.isCurrentDayValid = false;
+		} else if (this.isCurrentYearALeapYear()) {
+			if (tmp_dd <= 29)
+				this.isCurrentDayValid = true
+			else
+				this.isCurrentDayValid = false;
+		} else {
+			if (tmp_dd <= 28)
+				this.isCurrentDayValid = true
+			else
+				this.isCurrentDayValid = false;
+		}
 	} else {
-		if (this.dd <= 28)
-			return true;
+		this.isCurrentDayValid = false;
+	}
+
+	this.currentYear = function() {
+		if(this.isCurrentYearValid)
+			return tmp_yyyy;
 		else
-			return false;
+			return undefined;
+	}
+
+	this.isCurrentYearALeapYear = function() {
+		if(this.isCurrentYearValid)
+			return this.tmp_yyyy % 4 == 0 ? true : false;
+		else
+			return undefined;
+	}
+
+	this.previousYear = function() {
+		if(this.isCurrentYearValid) {
+			if(tmp_yyyy > 1000)
+				return DateValidator(tmp_yyyy - 1, mm, dd);
+			else
+				return undefined;
+		} else {
+			return undefined;
+		}
+	}
+
+	this.nextYear = function() {
+		if(this.isCurrentYearValid) {
+			if(tmp_yyyy < 9999)
+				return DateValidator(tmp_yyyy + 1, mm, dd);
+			else
+				return undefined;
+		} else {
+			return undefined;
+		}
+	}
+
+	this.currentMonth = function() {
+
+	}
+
+	this.previousMonth = function() {
+
+	}
+
+	this.nextMonth = function() {
+
+	}
+
+	this.currentDay = function() {
+
+	}
+
+	this.previousDay = function() {
+
+	}
+
+	this.nextDay = function() {
+
 	}
 }
