@@ -139,7 +139,7 @@ function DateValidator(yyyy, mm, dd) {
 					else
 						upper_b = 28;
 				}
-
+				console.log(upper_b);
 				if(tmp_dd < upper_b)
 					return new DateValidator(yyyy, mm, tmp_dd + 1);
 				else {
