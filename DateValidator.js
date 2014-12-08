@@ -141,7 +141,7 @@ function DateValidator(yyyy, mm, dd) {
 				}
 
 				if(tmp_dd < upper_b)
-					return DateValidator(yyyy, mm, tmp_dd + 1);
+					return new DateValidator(yyyy, mm, tmp_dd + 1);
 				else {
 					var nm = this.nextMonth();
 					return DateValidator(nm.yy, nm.mm, 1);
