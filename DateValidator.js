@@ -155,4 +155,10 @@ function DateValidator(yyyy, mm, dd) {
 			return undefined;
 		}
 	}
+
+	this.nicePrint = function() {
+		console.log("Year: " + this.yyyy);
+		console.log("Month: " + this.mm);
+		console.log("Day: " + this.dd);
+	}
 }
