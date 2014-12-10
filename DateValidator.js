@@ -59,7 +59,7 @@ function DateValidator(yyyy, mm, dd) {
 		if(this.isCurrentYearValid)
 			return tmp_yyyy;
 		else
-			return undefined;
+			return this.coalesceYear();
 	}
 
 	this.coalesceYear = function() {
@@ -78,9 +78,9 @@ function DateValidator(yyyy, mm, dd) {
 			if(tmp_yyyy > 1000)
 				return new DateValidator(tmp_yyyy - 1, mm, dd);
 			else
-				return undefined;
+				return new DateValidator(1000, mm, dd);
 		} else {
-			return undefined;
+			return new DateValidator(this.coalesceYear(), mm, dd);
 		}
 	}
 
@@ -89,9 +89,9 @@ function DateValidator(yyyy, mm, dd) {
 			if(tmp_yyyy < 9999)
 				return new DateValidator(tmp_yyyy + 1, mm, dd);
 			else
-				return undefined;
+				return new DateValidator(9999, mm, dd);
 		} else {
-			return undefined;
+			return new DateValidator(this.coalesceYear(), mm, dd);
 		}
 	}
 
@@ -99,7 +99,7 @@ function DateValidator(yyyy, mm, dd) {
 		if(this.isCurrentMonthValid)
 			return tmp_mm;
 		else
-			return undefined;
+			return this.coalesceMonth();
 	}
 
 	this.coalesceMonth = function() {
@@ -131,7 +131,7 @@ function DateValidator(yyyy, mm, dd) {
 			else 
 				return new DateValidator(this.previousYear().yyyy, 12, dd);
 		} else {
-			return undefined;
+			return new DateValidator(yyyy, this.coalesceMonth(), dd);
 		}
 	}
 
@@ -142,7 +142,7 @@ function DateValidator(yyyy, mm, dd) {
 			else 
 				return new DateValidator(this.nextYear().yyyy, 1, dd);
 		} else {
-			return undefined;
+			return new DateValidator(yyyy, this.coalesceMonth(), dd);
 		}
 	}
 
@@ -150,7 +150,7 @@ function DateValidator(yyyy, mm, dd) {
 		if(this.isCurrentDayValid)
 			return tmp_dd;
 		else
-			return undefined;
+			return this.coalesceDay();
 	}
 
 	this.coalesceDay = function() {
@@ -175,7 +175,7 @@ function DateValidator(yyyy, mm, dd) {
 				return new DateValidator(pm.yyyy, pm.mm, this.lastDayOfCurrentMonth());
 			}
 		} else {
-			return undefined;
+			return new DateValidator(yyyy, mm, this.coalesceDay());
 		}
 	}
 
@@ -203,7 +203,7 @@ function DateValidator(yyyy, mm, dd) {
 				return new DateValidator(yyyy, mm, tmp_dd + 1);
 			}
 		} else {
-			return undefined;
+			return new DateValidator(yyyy, mm, this.coalesceDay());
 		}
 	}
 
